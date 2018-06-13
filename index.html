@@ -31,38 +31,6 @@
       This is your fallback content in case JavaScript fails to load.
     </noscript>
     <div id="app"></div>
-      <script type='x-shader/x-vertex' id='vshader'>
-        #ifdef GL_ES
-          precision mediump float;
-        #endif
-
-        uniform float scale;
-        attribute vec3 displacement;
-        attribute float pointSize;
-
-        void main () {
-          gl_PointSize = pointSize;
-          vec3 newPosition = position + displacement * scale;
-          gl_Position = projectionMatrix
-            * modelViewMatrix
-            * vec4( newPosition, 1.0 );
-        }
-      </script>
-      <script type='x-shader/x-fragment' id='fshader'>
-        #ifdef GL_ES
-        precision mediump float;
-        #endif
-
-        uniform float u_time;
-        vec3 colorA = vec3(0.1, 0.46, 0.82);
-        vec3 colorB = vec3(0.85, 0.26, 0.08);
-
-        void main () {
-          float mixValue = abs( sin( u_time * 0.4 ) );
-          vec3 color = mix( colorA, colorB, mixValue );
-          gl_FragColor = vec4( color, .9 );
-        }
-      </script>
     <!-- Todo: only include in production -->
     <%= htmlWebpackPlugin.options.serviceWorkerLoader %>
     <!-- built files will be auto injected -->
