@@ -1,28 +1,55 @@
 <template>
   <div id="app">
-    <header>
-      <h1>数据为镜</h1>
-    </header>
     <main>
-      <div class='grid-center'>
-        <liveReport/>
-      </div>
-      <div class='grid-center'>
-        <weekReport/>
-      </div>
-      <div class='grid-center'>
-        <h2>数据采样说明</h2>
-        <p>采样机制</p>
-      </div>
+      <LiveLang :rawData='liveData.langs'/>
+      <LiveFlow :rawData='liveData.flow'/>
+      <WeekLang :rawData='weekData.langs'/>
+      <WeekFlow :rawData='weekData.flow'/>
     </main>
   </div>
 </template>
 
 <script>
+import LiveLang from './components/live.lang.vue'
+import LiveFlow from './components/live.flow.vue'
+import WeekLang from './components/week.lang.vue'
+import WeekFlow from './components/week.flow.vue'
+
 export default {
+  data () {
+    return {
+      liveData: {langs: [], flow: []},
+      weekData: {langs: [], flow: []}
+    }
+  },
   components: {
-    'liveReport': () => import('./components/liveReport.vue'),
-    'weekReport': () => import('./components/weekReport.vue')
+    LiveLang, LiveFlow, WeekLang, WeekFlow
+  },
+  mounted () {
+    this.getLiveReport()
+    this.getWeekReport()
+  },
+  methods: {
+    getLiveReport () {
+      this.$http.get('/api/liveReport')
+        .then(function (res) {
+          let {langs, flow} = res.body
+          this.liveData = {langs, flow}
+        })
+        .catch(function (err) {
+          console.log(err)
+        })
+    },
+    getWeekReport () {
+      this.$http.get('/api/weekReport')
+        .then(res => {
+          let {langs, flow} = res.body
+          this.weekData = {langs, flow}
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    }
   }
 }
 </script>
@@ -39,13 +66,8 @@ body {
 
 main {
   display: grid;
-  grid-template-columns: 1fr 4fr 1fr;
-  grid-template-rows: auto;
+  grid-template-columns: max-content 1fr;
+  grid-template-rows: 1fr 1fr;
+  align-self: center;
 }
-
-.grid-center {
-  grid-column: 2 / 3;
-  text-align: left;
-}
-
 </style>
