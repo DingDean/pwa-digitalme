@@ -1,22 +1,28 @@
 <template>
   <div id="app">
     <header>
-      <span>Vue.js PWA</span>
+      <h1>数据为镜</h1>
     </header>
     <main>
-      <img src="./assets/logo.png" alt="Vue.js PWA">
-      <hello></hello>
+      <div class='grid-center'>
+        <liveReport/>
+      </div>
+      <div class='grid-center'>
+        <weekReport/>
+      </div>
+      <div class='grid-center'>
+        <h2>数据采样说明</h2>
+        <p>采样机制</p>
+      </div>
     </main>
   </div>
 </template>
 
 <script>
-import Hello from './components/Hello'
-
 export default {
-  name: 'app',
   components: {
-    Hello
+    'liveReport': () => import('./components/liveReport.vue'),
+    'weekReport': () => import('./components/weekReport.vue')
   }
 }
 </script>
@@ -24,36 +30,22 @@ export default {
 <style>
 body {
   margin: 0;
-}
-
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  color: #2c3e50;
+  font-family: -apple-system,BlinkMacSystemFont,Segoe
+  UI,Roboto,Helvetica Neue,Helvetica,PingFang SC,Hiragino Sans
+  GB,Microsoft YaHei,SimSun,sans-serif;
+  font-size: 12px;
+  line-height: 22px;
 }
 
 main {
-  text-align: center;
-  margin-top: 40px;
+  display: grid;
+  grid-template-columns: 1fr 4fr 1fr;
+  grid-template-rows: auto;
 }
 
-header {
-  margin: 0;
-  height: 56px;
-  padding: 0 16px 0 24px;
-  background-color: #35495E;
-  color: #ffffff;
+.grid-center {
+  grid-column: 2 / 3;
+  text-align: left;
 }
 
-header span {
-  display: block;
-  position: relative;
-  font-size: 20px;
-  line-height: 1;
-  letter-spacing: .02em;
-  font-weight: 400;
-  box-sizing: border-box;
-  padding-top: 16px;
-}
 </style>
