@@ -11,7 +11,15 @@
     "lint": "eslint --ext .js,.vue src"
   },
   "dependencies": {
-    "vue": "^2.5.2"
+    "@antv/data-set": "^0.8.9",
+    "@antv/g2": "^3.0.12",
+    "moment": "^2.22.2",
+    "three": "^0.92.0",
+    "viser-vue": "^2.2.5",
+    "vue": "^2.5.2",
+    "vue-antd-ui": "^0.5.1",
+    "vue-resource": "^1.5.1",
+    "vue-socket.io": "^2.1.1-b"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.5",

@@ -1,22 +1,55 @@
 <template>
   <div id="app">
-    <header>
-      <span>Vue.js PWA</span>
-    </header>
     <main>
-      <img src="./assets/logo.png" alt="Vue.js PWA">
-      <hello></hello>
+      <LiveLang :rawData='liveData.langs'/>
+      <LiveFlow :rawData='liveData.flow'/>
+      <WeekLang :rawData='weekData.langs'/>
+      <WeekFlow :rawData='weekData.flow'/>
     </main>
   </div>
 </template>
 
 <script>
-import Hello from './components/Hello'
+import LiveLang from './components/live.lang.vue'
+import LiveFlow from './components/live.flow.vue'
+import WeekLang from './components/week.lang.vue'
+import WeekFlow from './components/week.flow.vue'
 
 export default {
-  name: 'app',
+  data () {
+    return {
+      liveData: {langs: [], flow: []},
+      weekData: {langs: [], flow: []}
+    }
+  },
   components: {
-    Hello
+    LiveLang, LiveFlow, WeekLang, WeekFlow
+  },
+  mounted () {
+    this.getLiveReport()
+    this.getWeekReport()
+  },
+  methods: {
+    getLiveReport () {
+      this.$http.get('/api/liveReport')
+        .then(function (res) {
+          let {langs, flow} = res.body
+          this.liveData = {langs, flow}
+        })
+        .catch(function (err) {
+          console.log(err)
+        })
+    },
+    getWeekReport () {
+      this.$http.get('/api/weekReport')
+        .then(res => {
+          let {langs, flow} = res.body
+          this.weekData = {langs, flow}
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    }
   }
 }
 </script>
@@ -24,36 +57,17 @@ export default {
 <style>
 body {
   margin: 0;
-}
-
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  color: #2c3e50;
+  font-family: -apple-system,BlinkMacSystemFont,Segoe
+  UI,Roboto,Helvetica Neue,Helvetica,PingFang SC,Hiragino Sans
+  GB,Microsoft YaHei,SimSun,sans-serif;
+  font-size: 12px;
+  line-height: 22px;
 }
 
 main {
-  text-align: center;
-  margin-top: 40px;
-}
-
-header {
-  margin: 0;
-  height: 56px;
-  padding: 0 16px 0 24px;
-  background-color: #35495E;
-  color: #ffffff;
-}
-
-header span {
-  display: block;
-  position: relative;
-  font-size: 20px;
-  line-height: 1;
-  letter-spacing: .02em;
-  font-weight: 400;
-  box-sizing: border-box;
-  padding-top: 16px;
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  grid-template-rows: 1fr 1fr;
+  align-self: center;
 }
 </style>
